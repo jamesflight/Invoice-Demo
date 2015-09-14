@@ -1,0 +1,8 @@
+class_name: InvoicesTester
+modules:
+    enabled:
+        - \Helper\Invoices
+        - REST:
+            depends: Laravel5
+            url: 'http://worthers-demo:8123/api/'
+        - Laravel5
