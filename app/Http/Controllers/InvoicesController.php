@@ -24,6 +24,6 @@ class InvoicesController extends Controller
             'vat_percentage' => $input['vat_percentage']
         ]);
 
-        return response()->json(null, 200);
+        return response()->json(['errors' => false], 200);
     }
 }

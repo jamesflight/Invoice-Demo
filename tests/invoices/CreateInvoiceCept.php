@@ -13,3 +13,5 @@ $I->seeRecord('invoices', [
     'due_date' => new DateTime('2015-01-15'),
     'vat_percentage' => 20
 ]);
+
+$I->seeResponseContainsJson(['errors' => false]);
