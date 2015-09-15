@@ -42,28 +42,24 @@ class InvoicesController extends Controller
             'discount'
         );
 
-        $errors = new MessageBag();
+        $input['amount'] = $input['amount'] * 100;
 
         $invoice = Invoice::find($invoice_id);
 
-        if ($invoice->line_items()->count() > 4) {
-            $errors->add('invoice', 'An Invoice can\'t have more than 5 line items.');
-        }
-
-        if ($errors->count()) {
+        try {
+            $invoice->addLineItem(
+                $input['name'],
+                $input['amount'],
+                $input['discount']
+            );
+        } catch (InvalidModelException $e) {
             return response()->json([
                 'errors' => true,
-                'messages' => $errors->all()
+                'messages' => $e->getErrors()->all()
             ]);
         }
 
-        $lineItem = LineItem::create([
-            'name' => $input['name'],
-            'amount' => $input['amount'] * 100,
-            'discount' => $input['discount']
-        ]);
-
-        $invoice->line_items()->save($lineItem);
+        $invoice->push();
 
         return response()->json(['errors' => false], 200);
     }

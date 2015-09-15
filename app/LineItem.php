@@ -11,6 +11,11 @@ class LineItem extends Model
         'discount'
     ];
 
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
     public function getTotal()
     {
         return $this->amount * ($this->discount / 100);

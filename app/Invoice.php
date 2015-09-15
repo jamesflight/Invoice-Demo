@@ -1,8 +1,10 @@
 <?php
 namespace App;
 
+use App\Exceptions\InvalidModelException;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\MessageBag;
 
 class Invoice extends Model
 {
@@ -40,6 +42,25 @@ class Invoice extends Model
     {
         $netTotal = $this->getNetTotal();
         return $netTotal + ($netTotal * ($this->vat_percentage / 100));
+    }
+
+    public function addLineItem($name, $amount, $discount)
+    {
+        $errors = new MessageBag();
+
+        if ($this->line_items()->count() > 4) {
+            $errors->add('invoice', 'An Invoice can\'t have more than 5 line items.');
+            throw new InvalidModelException($errors);
+        }
+
+        $lineItem = LineItem::create([
+            'name' => $name,
+            'amount' => $amount,
+            'discount' => $discount
+        ]);
+
+        $lineItem->invoice_id = $this->id;
+        $this->setRelation('line_items', $lineItem);
     }
 }
  
