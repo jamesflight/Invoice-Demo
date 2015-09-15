@@ -1,6 +1,6 @@
 <?php 
 $I = new InvoicesTester($scenario);
-$I->wantTo('perform actions and see result');
+$I->wantTo('create a line item for an invoice');
 
 $invoice = $I->createInvoice();
 

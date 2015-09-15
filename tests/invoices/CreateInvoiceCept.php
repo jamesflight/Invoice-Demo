@@ -1,6 +1,6 @@
 <?php 
 $I = new InvoicesTester($scenario);
-$I->wantTo('perform actions and see result');
+$I->wantTo('create an invoice');
 
 $I->sendPOST('invoices', [
     'issue_date' => '2015-01-01',
