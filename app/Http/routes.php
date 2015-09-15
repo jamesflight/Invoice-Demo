@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\InvoicesController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,5 +20,9 @@ Route::get('/', function () {
 Route::group(['prefix' => 'api'], function () {
     Route::post('invoices', [
         'uses' => InvoicesController::class . '@create'
+    ]);
+
+    Route::post('invoices/{id}/line_items', [
+        'uses' => InvoicesController::class . '@addLineItem'
     ]);
 });

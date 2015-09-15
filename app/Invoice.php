@@ -10,5 +10,10 @@ class Invoice extends Model
         'due_date',
         'vat_percentage'
     ];
+
+    public function line_items()
+    {
+        return $this->hasMany(LineItem::class);
+    }
 }
  
