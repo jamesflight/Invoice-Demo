@@ -26,5 +26,20 @@ class Invoice extends Model
     {
         return new DateTime($this->attributes['due_date']);
     }
+
+    public function getNetTotal()
+    {
+        $total = 0;
+        foreach ($this->line_items as $line_item) {
+            $total += $line_item->amount - ($line_item->amount * ($line_item->discount / 100));
+        }
+        return $total;
+    }
+
+    public function getGrossTotal()
+    {
+        $netTotal = $this->getNetTotal();
+        return $netTotal + ($netTotal * ($this->vat_percentage / 100));
+    }
 }
  
