@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\FractalTrait;
+use App\Http\Transformers\InvoicesTransformer;
 use App\Invoice;
 use App\LineItem;
 use DateTime;
@@ -11,6 +13,8 @@ use App\Http\Controllers\Controller;
 
 class InvoicesController extends Controller
 {
+    use FractalTrait;
+
     public function create(Request $request)
     {
         $input = $request->only(
@@ -53,14 +57,6 @@ class InvoicesController extends Controller
     {
         $invoice = Invoice::find($id);
 
-        $invoiceArray = $invoice->toArray();
-
-        $invoiceArray['line_items'] = $invoice->line_items->toArray();
-
-        foreach ($invoiceArray['line_items'] as $key => $line_item) {
-            $invoiceArray['line_items'][$key]['amount'] = number_format(round($line_item['amount'] / 100, 2), 2, '.', '');
-        }
-
-        return response()->json($invoiceArray, 200);
+        return $this->jsonItem($invoice, InvoicesTransformer::class);
     }
 }
