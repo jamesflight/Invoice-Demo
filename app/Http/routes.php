@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix' => 'api'], function () {
+    Route::post('invoices', [
+        'uses' => InvoicesController::class . '@create'
+    ]);
+});
