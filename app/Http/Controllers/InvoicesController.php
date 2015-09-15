@@ -38,7 +38,11 @@ class InvoicesController extends Controller
 
         $invoice = Invoice::find($invoice_id);
 
-        $lineItem = LineItem::create($input);
+        $lineItem = LineItem::create([
+            'name' => $input['name'],
+            'amount' => $input['amount'] * 100,
+            'discount' => $input['discount']
+        ]);
 
         $invoice->line_items()->save($lineItem);
 
@@ -52,6 +56,10 @@ class InvoicesController extends Controller
         $invoiceArray = $invoice->toArray();
 
         $invoiceArray['line_items'] = $invoice->line_items->toArray();
+
+        foreach ($invoiceArray['line_items'] as $key => $line_item) {
+            $invoiceArray['line_items'][$key]['amount'] = number_format(round($line_item['amount'] / 100, 2), 2, '.', '');
+        }
 
         return response()->json($invoiceArray, 200);
     }

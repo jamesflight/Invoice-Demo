@@ -6,7 +6,7 @@ $invoice = $I->createInvoice();
 
 $I->sendPOST("invoices/$invoice->id/line_items", [
     'name' => 'Staples',
-    'amount' => 250,
+    'amount' => '2.50',
     'discount' => 20
 ]);
 
