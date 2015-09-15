@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidModelException;
 use App\Http\FractalTrait;
 use App\Http\Transformers\InvoicesTransformer;
 use App\Invoice;
@@ -10,6 +11,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\MessageBag;
 
 class InvoicesController extends Controller
 {
@@ -40,7 +42,20 @@ class InvoicesController extends Controller
             'discount'
         );
 
+        $errors = new MessageBag();
+
         $invoice = Invoice::find($invoice_id);
+
+        if ($invoice->line_items()->count() > 4) {
+            $errors->add('invoice', 'An Invoice can\'t have more than 5 line items.');
+        }
+
+        if ($errors->count()) {
+            return response()->json([
+                'errors' => true,
+                'messages' => $errors->all()
+            ]);
+        }
 
         $lineItem = LineItem::create([
             'name' => $input['name'],
