@@ -44,4 +44,15 @@ class InvoicesController extends Controller
 
         return response()->json(['errors' => false], 200);
     }
+
+    public function get($id)
+    {
+        $invoice = Invoice::find($id);
+
+        $invoiceArray = $invoice->toArray();
+
+        $invoiceArray['line_items'] = $invoice->line_items->toArray();
+
+        return response()->json($invoiceArray, 200);
+    }
 }

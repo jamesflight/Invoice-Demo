@@ -11,13 +11,19 @@ $I->seeResponseContainsJson([
 ]);
 
 $I->seeResponseContainsJson([
-    'id' => $invoice->line_items[0]->id
+    'line_items' => [
+        'id' => $invoice->line_items[0]->id
+    ]
 ]);
 
 $I->seeResponseContainsJson([
-    'id' => $invoice->line_items[1]->id
+    'line_items' => [
+        'id' => $invoice->line_items[1]->id
+    ]
 ]);
 
 $I->seeResponseContainsJson([
-    'id' => $invoice->line_items[2]->id
+    'line_items' => [
+        'id' => $invoice->line_items[2]->id
+    ]
 ]);

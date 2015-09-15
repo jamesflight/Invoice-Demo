@@ -25,4 +25,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('invoices/{id}/line_items', [
         'uses' => InvoicesController::class . '@addLineItem'
     ]);
+
+    Route::get('invoices/{id}', [
+        'uses' => InvoicesController::class . '@get'
+    ]);
 });
