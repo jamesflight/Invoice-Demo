@@ -31,7 +31,7 @@ class Invoice extends Model
     {
         $total = 0;
         foreach ($this->line_items as $line_item) {
-            $total += $line_item->amount - ($line_item->amount * ($line_item->discount / 100));
+            $total += $line_item->amount - $line_item->getTotal();
         }
         return $total;
     }
