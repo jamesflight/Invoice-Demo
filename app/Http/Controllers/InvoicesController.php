@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Commands\AddLineItemToInvoice;
 use App\Exceptions\InvalidModelException;
 use App\Http\FractalTrait;
 use App\Http\Transformers\InvoicesTransformer;
@@ -36,32 +37,23 @@ class InvoicesController extends Controller
 
     public function addLineItem(Request $request, $invoice_id)
     {
-        $input = $request->only(
+        $line_item = $request->only(
             'name',
             'amount',
             'discount'
         );
 
-        $input['amount'] = $input['amount'] * 100;
+        $line_item['amount'] = $line_item['amount'] * 100;
 
-        $invoice = Invoice::find($invoice_id);
+        $response = ['errors' => false];
 
         try {
-            $invoice->addLineItem(
-                $input['name'],
-                $input['amount'],
-                $input['discount']
-            );
+            $this->dispatch(new AddLineItemToInvoice($invoice_id, $line_item));
         } catch (InvalidModelException $e) {
-            return response()->json([
-                'errors' => true,
-                'messages' => $e->getErrors()->all()
-            ]);
+            $response = ['errors' => true, 'messages' => $e->getErrors()];
         }
 
-        $invoice->push();
-
-        return response()->json(['errors' => false], 200);
+        return response()->json($response, 200);
     }
 
     public function get($id)
