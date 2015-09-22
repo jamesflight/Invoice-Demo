@@ -18,7 +18,17 @@ class LineItem extends Model
 
     public function getTotal()
     {
-        return $this->amount * ($this->discount / 100);
+        return $this->amount * (1 - ($this->discount / 100));
+    }
+
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    public function getDiscountAmount()
+    {
+        return $this->amount - $this->getTotal();
     }
 }
  
