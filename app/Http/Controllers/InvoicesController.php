@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidModelException;
 use App\Http\FractalTrait;
 use App\Http\Transformers\InvoicesTransformer;
 use App\Invoice;
@@ -40,14 +41,24 @@ class InvoicesController extends Controller
             'discount'
         );
 
+        $input['amount'] = $input['amount'] * 100;
+
         $invoice = Invoice::find($invoice_id);
 
-        
-
-            return response()->json(['errors' => false], 200);
-
+        try {
+            $invoice->addItem(
+                $input['name'],
+                $input['amount'],
+                $input['discount']
+            );
+        } catch(InvalidModelException $e) {
+            return response()->json([
+                'errors' => true,
+                'messages' => $e->getErrors()
+            ], 400);
         }
 
+        return response()->json(['errors' => false], 200);
     }
 
     public function get($id)
