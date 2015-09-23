@@ -15,7 +15,9 @@ class CliErrorHandler
     public function terminate($request, $response)
     {
         if (property_exists($response, 'exception')) {
-            throw $response->exception;
+            if (is_object($response->exception)) {
+                throw $response->exception;
+            }
         }
     }
 }

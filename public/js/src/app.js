@@ -1,3 +1,7 @@
-console.log('app');
+"use strict";
 
-console.log('fads');
+angular.module('invoicio', [
+    'invoicio.awesome-module'
+]).config(function($interpolateProvider){
+    $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+});

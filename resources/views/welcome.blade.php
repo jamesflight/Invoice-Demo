@@ -36,10 +36,13 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Laravel 5</div>
+        <div class="container" ng-app="invoicio">
+            <div class="content" ng-controller="awesomeController">
+                <div>{[{ message }]}</div>
+                <div>{[{ message2 }]}</div>
+                <div awesome-directive></div>
             </div>
         </div>
+        <script src="/js/dist/main.min.js"></script>
     </body>
 </html>

@@ -29,7 +29,10 @@ gulp.task('buildJs', function(){
 
 gulp.task('lint', function(){
     return gulp.src(['public/js/src/**/*.js'])
-        .pipe(jshint())
+        .pipe(jshint({
+            globalstrict:true,
+            "predef": ["angular"]
+        }))
         .pipe(jshint.reporter('default'))
 });
 
