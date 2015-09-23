@@ -53,7 +53,7 @@ class InvoicesController extends Controller
             $response = ['errors' => true, 'messages' => $e->getErrors()];
         }
 
-        return response()->json($response, 200);
+        return response()->json($response, 400);
     }
 
     public function get($id)

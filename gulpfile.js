@@ -1,16 +1,42 @@
-var elixir = require('laravel-elixir');
+var gulp = require('gulp');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var ngAnnotate = require('gulp-ng-annotate');
+var sourcemaps = require('gulp-sourcemaps');
+var jshint = require('gulp-jshint');
+var cache = require('gulp-cache');
 
-/*
- |--------------------------------------------------------------------------
- | Elixir Asset Management
- |--------------------------------------------------------------------------
- |
- | Elixir provides a clean, fluent API for defining some basic Gulp tasks
- | for your Laravel application. By default, we are compiling the Sass
- | file for our application, as well as publishing vendor resources.
- |
- */
+gulp.task('buildJs', function(){
+    gulp.src('public/assets/js/main.js')
+        .pipe(uglify())
+        .pipe(concat('main.min.js'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('public/assets/js'));
+});
 
-elixir(function(mix) {
-    mix.sass('app.scss');
+gulp.task('buildJs', function(){
+    return gulp.src([
+        'bower_components/angular/angular.min.js',
+        'public/js/src/**/*.js'
+    ])
+        .pipe(sourcemaps.init())
+        .pipe(cache(ngAnnotate()))
+        .pipe(cache(uglify()))
+        .pipe(concat('main.min.js'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('public/js/dist'));
+});
+
+gulp.task('lint', function(){
+    return gulp.src(['public/js/src/**/*.js'])
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+});
+
+gulp.task('js',['buildJs']);
+
+gulp.task('default',['lint', 'buildJs']);
+
+gulp.task('watch', function() {
+    gulp.watch('public/js/src/**/*.*', ['default']);
 });

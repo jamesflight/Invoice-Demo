@@ -10,6 +10,13 @@ $I->sendPOST("invoices/$invoice->id/line_items", [
     'discount' => 20
 ]);
 
+$I->dontSeeRecord('line_items', [
+    'invoice_id' => $invoice->id,
+    'name' => 'Staples',
+    'amount' => 250,
+    'discount' => 20
+]);
+
 $I->seeResponseContainsJson([
     'errors' => true
 ]);

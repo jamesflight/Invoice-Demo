@@ -14,9 +14,8 @@ class CliErrorHandler
 
     public function terminate($request, $response)
     {
-        if ($response->getStatusCode() === 500 || $response->getStatusCode() === 404) {
+        if (property_exists($response, 'exception')) {
             throw $response->exception;
         }
     }
 }
- 
