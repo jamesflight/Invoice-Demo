@@ -15,7 +15,9 @@ class InvoicesTransformer extends TransformerAbstract
         return [
             'id' => $model->id,
             'issue_date' => $model->issue_date->format('Y/m/d'),
-            'due_date' => $model->due_date->format('Y/m/d')
+            'due_date' => $model->due_date->format('Y/m/d'),
+            'net_total' => $this->formatAmount($model->getNetTotal()),
+            'gross_total' => $this->formatAmount($model->getGrossTotal())
         ];
     }
 
@@ -24,5 +26,9 @@ class InvoicesTransformer extends TransformerAbstract
         $lineItems = $model->line_items;
         return $this->collection($lineItems, new LineItemsTransformer());
     }
+
+    private function formatAmount($amount)
+    {
+        return number_format(round($amount / 100, 2), 2, '.', '');
+    }
 }
- 

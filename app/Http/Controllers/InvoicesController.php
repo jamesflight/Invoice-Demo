@@ -42,15 +42,12 @@ class InvoicesController extends Controller
 
         $invoice = Invoice::find($invoice_id);
 
-        $lineItem = LineItem::create([
-            'name' => $input['name'],
-            'amount' => $input['amount'] * 100,
-            'discount' => $input['discount']
-        ]);
+        
 
-        $invoice->line_items()->save($lineItem);
+            return response()->json(['errors' => false], 200);
 
-        return response()->json(['errors' => false], 200);
+        }
+
     }
 
     public function get($id)
