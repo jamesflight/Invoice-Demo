@@ -38,23 +38,38 @@ class InvoicesController extends Controller
 
     public function addLineItem(Request $request, $invoice_id)
     {
+<<<<<<< Updated upstream
         $line_item = $request->only(
+=======
+        $lineItem = $request->only(
+>>>>>>> Stashed changes
             'name',
             'amount',
             'discount'
         );
 
+<<<<<<< Updated upstream
         $line_item['amount'] = $line_item['amount'] * 100;
 
         $response = ['errors' => false];
 
         try {
             $this->dispatch(new AddLineItemToInvoice($invoice_id, $line_item));
+=======
+        $lineItem['amount'] = $lineItem['amount'] * 100;
+
+        try {
+            $this->dispatch(new AddLineItemToInvoice($invoice_id, $lineItem));
+>>>>>>> Stashed changes
         } catch (InvalidModelException $e) {
             $response = ['errors' => true, 'messages' => $e->getErrors()];
         }
 
+<<<<<<< Updated upstream
         return response()->json($response, 400);
+=======
+        return response()->json(['errors' => false], 200);
+>>>>>>> Stashed changes
     }
 
     public function get($id)
